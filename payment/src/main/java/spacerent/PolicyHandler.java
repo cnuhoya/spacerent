@@ -19,9 +19,10 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener Cancelpay : " + bookcancelled.toJson() + "\n\n");
 
-        // Sample Logic //
-        Payment payment = new Payment();
-        paymentRepository.save(payment);
+        // 결제 취소 상태 저장 
+        Payment payment = paymentRepository.findByBookId(bookcancelled.getBookid());
+        payment.setStatus("PayCancelled");
+        paymentRepository.save(payment);        
             
     }
 
