@@ -19,8 +19,9 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener Updatestate : " + registered.toJson() + "\n\n");
 
-        // Sample Logic //
-        Book book = new Book();
+        // booking 성공 상태 저장  //
+        Book book = new Book.findByAppId(book.getbookId());
+        book.setstatus(registered.getstatus());
         bookRepository.save(book);
             
     }
@@ -31,8 +32,9 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener Updatestate : " + registercancelled.toJson() + "\n\n");
 
-        // Sample Logic //
-        Book book = new Book();
+        // booking 취소 상태 저장  //
+        Book book = new Book.findByAppId(book.getbookId());
+        book.setstatus(registercancelled.getstatus());
         bookRepository.save(book);
             
     }
