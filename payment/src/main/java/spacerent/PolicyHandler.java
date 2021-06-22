@@ -21,7 +21,7 @@ public class PolicyHandler{
 
         // 결제 취소 상태 저장 
         Payment payment = paymentRepository.findByBookId(bookcancelled.getBookid());
-        payment.setStatus("PayCancelled");
+        payment.setStatus("cancel-pay");
         paymentRepository.save(payment);        
             
     }
