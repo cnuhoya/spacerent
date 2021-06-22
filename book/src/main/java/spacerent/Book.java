@@ -23,12 +23,11 @@ public class Book {
         booked.publishAfterCommit();
 
         spacerent.external.Payment payment = new spacerent.external.Payment();
-        payment.setbookId(booked.getbookid());
-        payment.setspacename(booked.getspacename());
-        payment.setstatus("booking");
-        payment.setuserid(booked.getbookid());
-        Application.applicationContext.getBean(spacerent.external.PaymentService.class)
-            .pay(payment);
+        payment.setBookId(booked.getBookid());
+        payment.setSpacename(booked.getSpacename());
+        payment.setStatus("booking");
+        payment.setUserid(booked.getBookid());
+        Application.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
 
 
     }
@@ -36,7 +35,7 @@ public class Book {
     @PostUpdate
     public void onPostUpdate(){
          
-        System.out.println("\n\n##### app onPostUpdate, getstatus() : " + getstatus() + "\n\n");
+        System.out.println("\n\n##### app onPostUpdate, getStatus() : " + getStatus() + "\n\n");
         if(getStatus().equals("cancel-booking")) {
             Bookcancelled bookcancelled = new Bookcancelled();
             BeanUtils.copyProperties(this, bookcancelled);
