@@ -22,11 +22,11 @@ public class Book {
         BeanUtils.copyProperties(this, booked);
         booked.publishAfterCommit();
 
-        //Following code causes dependency to external APIs
-        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
-
         spacerent.external.Payment payment = new spacerent.external.Payment();
-        // mappings goes here
+        payment.setbookId(booked.getbookid());
+        payment.setspacename(booked.getspacename());
+        payment.setstatus("booking");
+        payment.setuserid(booked.getbookid());
         Application.applicationContext.getBean(spacerent.external.PaymentService.class)
             .pay(payment);
 
@@ -35,9 +35,14 @@ public class Book {
 
     @PostUpdate
     public void onPostUpdate(){
-        Bookcancelled bookcancelled = new Bookcancelled();
-        BeanUtils.copyProperties(this, bookcancelled);
-        bookcancelled.publishAfterCommit();
+         
+        System.out.println("\n\n##### app onPostUpdate, getstatus() : " + getstatus() + "\n\n");
+        if(getStatus().equals("cancel-booking")) {
+            Bookcancelled bookcancelled = new Bookcancelled();
+            BeanUtils.copyProperties(this, bookcancelled);
+            bookcancelled.setStatus("cancel-booking");
+            bookcancelled.publishAfterCommit();
+        }        
 
 
     }
