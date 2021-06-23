@@ -45,3 +45,214 @@
     2. 결제 시스템이 과중되면 예약(booking)을 잠시 후 처리하도록 유도한다  - Circuit breaker, fallback
 3. 성능
     1. 마이페이지에서 예약상태(booking) 확인 가능  - CQRS
+
+# 분석/설계
+
+
+## Event Storming 결과
+* MSAEz 로 모델링한 이벤트스토밍 결과: http://www.msaez.io/#/storming/QFPJP8hKmlRp2MfooEVdmMfG9B72/mine/ccf667a1ea140f64e4144c2628864dfd
+
+# 구현
+분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라,구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다.
+(각자의 포트넘버는 8081 ~ 8084, 8088 이다.)
+```shell
+cd book
+mvn spring-boot:run
+
+cd payment
+mvn spring-boot:run 
+
+cd space
+mvn spring-boot:run 
+
+cd mypage 
+mvn spring-boot:run
+
+cd gateway
+mvn spring-boot:run 
+```
+***
+
+## DDD 의 적용
+
+- 각 서비스내에 도출된 핵심 Aggregate 단위로 Entity 로 선언하였다. 
+- Spring Data REST의 RestRepository 적용 ( Entity / Repository Pattern 적용 위해 )
+
+```
+book 서비스 : book.java
+
+package spacerent;
+
+import javax.persistence.*;
+import org.springframework.beans.BeanUtils;
+import java.util.List;
+import java.util.Date;
+
+@Entity
+@Table(name="Book_table")
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long bookid;
+    private Long userid;
+    private String status;
+    private String spacename;
+
+    @PostPersist
+    public void onPostPersist(){
+        Booked booked = new Booked();
+        BeanUtils.copyProperties(this, booked);
+        booked.publishAfterCommit();
+
+        spacerent.external.Payment payment = new spacerent.external.Payment();
+        payment.setBookid(booked.getBookid());
+        payment.setSpacename(booked.getSpacename());
+        payment.setStatus("booking");
+        payment.setUserid(booked.getBookid());
+ );
+
+
+    }
+
+    @PostUpdate
+    public void onPostUpdate(){
+         
+        System.out.println("\n\n##### app onPostUpdate, getStatus() : " + getStatus() + "\n\n");
+        if(getStatus().equals("cancel-booking")) {
+            Bookcancelled bookcancelled = new Bookcancelled();
+            BeanUtils.copyProperties(this, bookcancelled);
+            bookcancelled.publishAfterCommit();
+            
+            spacerent.external.Payment payment = new spacerent.external.Payment();
+            payment.setBookid(bookcancelled.getBookid());
+            payment.setSpacename(bookcancelled.getSpacename());
+            payment.setStatus("cancel-booking");
+            payment.setUserid(bookcancelled.getBookid());
+);            
+        }        
+
+
+    }
+
+
+    public Long getBookid() {
+        return bookid;
+    }
+
+    public void setBookid(Long bookid) {
+        this.bookid = bookid;
+    }
+    public Long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Long userid) {
+        this.userid = userid;
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public String getSpacename() {
+        return spacename;
+    }
+
+    public void setSpacename(String spacename) {
+        this.spacename = spacename;
+    }
+
+    public class findByBookId {
+    }
+
+}
+```
+- book 서비스 : BookRepository.java
+```
+package spacerent;
+
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource(collectionResourceRel="books", path="books")
+public interface BookRepository extends PagingAndSortingRepository<Book, Long>{
+
+      Book findByBookId(Long bookid);
+      
+}
+```
+
+book 서비스 : PolicyHandler.java
+```
+package spacerent;
+
+import spacerent.config.kafka.KafkaProcessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PolicyHandler{
+    @Autowired BookRepository bookRepository;
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverRegistered_Updatestate(@Payload Registered registered){
+
+        if(!registered.validate()) return;
+
+        System.out.println("\n\n##### listener Updatestate : " + registered.toJson() + "\n\n");
+
+        // booking 성공 상태 저장  //
+        Book book = bookRepository.findByBookId(registered.getBookid());
+        book.setStatus(registered.getStatus());
+        bookRepository.save(book);
+            
+    }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverRegistercancelled_Updatestate(@Payload Registercancelled registercancelled){
+
+        if(!registercancelled.validate()) return;
+
+        System.out.println("\n\n##### listener Updatestate : " + registercancelled.toJson() + "\n\n");
+
+        // booking 취소 상태 저장  //
+        Book book = bookRepository.findByBookId(registercancelled.getBookid());
+        book.setStatus(registercancelled.getStatus());
+        bookRepository.save(book);
+            
+    }
+
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whatever(@Payload String eventString){}
+
+
+}
+```
+- 적용 후 REST API 의 테스트
+```
+# 공간 예약(booking)
+http POST http://localhost:8081/book userid="CHOI" bookid="1" spacename="numberone" status="booking"
+
+# 결제 확인(payment)
+http GET http://localhost:8084/payment/1 
+
+# 공간 등록(register)
+http PETCH http://localhost:8082/space/1 status="registered"
+
+# 공간 예약 취소(booking)
+http POST http://localhost:8081/book userid="CHOI" bookid="1" spacename="numberone" status="cancel-booking"
+
+# 결제 확인(payment)
+http GET http://localhost:8084/payment/1 
+
+# 공간 취소(register)
+http PETCH http://localhost:8082/space/1 status="registercancelled"
+
+```
