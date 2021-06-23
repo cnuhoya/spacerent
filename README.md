@@ -1,5 +1,8 @@
 # spacerent
--)
+# spacerent 공강대여 
+- 체크포인트 : https://workflowy.com/s/assessment-check-po/T5YrzcMewfo4J6LW
+
+# Table of contents
   - [서비스 시나리오](#서비스-시나리오)
   - [분석/설계](#분석설계)
     - [Event Storming 결과](#Event-Storming-결과)
