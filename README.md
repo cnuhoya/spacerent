@@ -256,3 +256,103 @@ http GET http://localhost:8084/payment/1
 http PETCH http://localhost:8082/space/1 status="registercancelled"
 
 ```
+
+## Gateway 적용
+API GateWay를 통하여 마이크로 서비스들의 진입점을 통일할 수 있다. 
+아래와 같이 GateWay를 적용하여 마이크로서비스들은 http://localhost:8088/{context}로 접근 .
+
+```
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: book
+          uri: http://localhost:8081
+          predicates:
+            - Path=/books/** 
+        - id: space
+          uri: http://localhost:8082
+          predicates:
+            - Path=/spaces/** 
+        - id: payment
+          uri: http://localhost:8083
+          predicates:
+            - Path=/payments/** 
+        - id: mypage
+          uri: http://localhost:8084
+          predicates:
+            - Path= /mypages/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: book
+          uri: http://book:8080
+          predicates:
+            - Path=/books/** 
+        - id: space
+          uri: http://space:8080
+          predicates:
+            - Path=/spaces/** 
+        - id: payment
+          uri: http://payment:8080
+          predicates:
+            - Path=/payments/** 
+        - id: mypage
+          uri: http://mypage:8080
+          predicates:
+            - Path= /mypages/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
+
+```
+
+## CQRS
+타 마이크로서비스의 데이터 원본에 접근없이(Composite 서비스나 조인SQL 등 없이)도 내 서비스의 공간 예약 내역 조회가 가능하게 구현해 두었다.
+본 프로젝트에서 View 역할은 mypage 서비스가 수행한다.
+
+CQRS를 구현하여 마이페이지를 통해 조회할 수 있도록 구현
+
+## Polyglot 
+
+타 서비스들과 다른 DB를 사용하여 각 마이크로서비스의 다양한 요구사항과 서로 다른 종류의 DB간에도 문제 없이 능동적으로 대처가능한 다형성을 만족하는지 확인
+
+## 동기식 호출
+
+
+# 운영
+
+## Deploy / Pipeline
+  
