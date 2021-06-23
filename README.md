@@ -52,6 +52,21 @@
 ## Event Storming 결과
 * MSAEz 로 모델링한 이벤트스토밍 결과: http://www.msaez.io/#/storming/QFPJP8hKmlRp2MfooEVdmMfG9B72/mine/ccf667a1ea140f64e4144c2628864dfd
 
+### 이벤트 도출
+![image](https://user-images.githubusercontent.com/19682978/123178135-8af4ae80-d4c1-11eb-88b1-fb3ccf96a583.png)
+
+### 부적격 이벤트 탈락
+![image](https://user-images.githubusercontent.com/19682978/123178278-d3ac6780-d4c1-11eb-98fa-15c134e9d11d.png)
+
+### 완성된 1차 모형
+![image](https://user-images.githubusercontent.com/19682978/123178376-08b8ba00-d4c2-11eb-9585-3a94560cc26f.png)
+
+### 완성된 최종 모형 ( 시나리오 점검 후 )
+![image](https://user-images.githubusercontent.com/19682978/123178434-2554f200-d4c2-11eb-9cde-f969f5ca4264.png)
+
+## 헥사고날 아키텍처 다이어그램 도출 
+![image](https://user-images.githubusercontent.com/20077391/121859335-88ac8a80-cd32-11eb-9159-9599abcf67cf.png)
+
 # 구현
 분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라,구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다.
 (각자의 포트넘버는 8081 ~ 8084, 8088 이다.)
