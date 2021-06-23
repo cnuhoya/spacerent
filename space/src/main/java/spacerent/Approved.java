@@ -9,11 +9,11 @@ public class Approved extends AbstractEvent {
     private String status;
     private String spacename;
 
-    public Long getId() {
+    public Long getpayid() {
         return payid;
     }
 
-    public void setId(Long payid) {
+    public void setpayid(Long payid) {
         this.payid = payid;
     }
     public Long getBookid() {

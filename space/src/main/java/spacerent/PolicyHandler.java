@@ -20,12 +20,11 @@ public class PolicyHandler{
         System.out.println("\n\n##### listener Receivestatus : " + approved.toJson() + "\n\n");        
         Space space = new Space(); 
 
-        space.setSpaceid(approved.getSpaceid());
         space.setUserid(approved.getUserid());
         space.setSpacename(approved.getSpacename());
-        space.setBookid("Order-Delivery");
+        space.setBookid(approved.getBookid());
 
-        if(approved.getStatus == "cancel-pay"){
+        if(approved.getStatus() == "cancel-pay"){
            space.setStatus("cancel-register");          
         }
         else{

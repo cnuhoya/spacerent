@@ -9,11 +9,11 @@ public class Registered extends AbstractEvent {
     private String status;
     private Long bookid;
 
-    public Long getId() {
+    public Long getSpaceid() {
         return spaceid;
     }
 
-    public void setId(Long spaceid) {
+    public void setSpaceid(Long spaceid) {
         this.spaceid = spaceid;
     }
     public Long getUserid() {
