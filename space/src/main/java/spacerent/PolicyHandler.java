@@ -17,12 +17,22 @@ public class PolicyHandler{
 
         if(!approved.validate()) return;
 
-        System.out.println("\n\n##### listener Receivestatus : " + approved.toJson() + "\n\n");
+        System.out.println("\n\n##### listener Receivestatus : " + approved.toJson() + "\n\n");        
+        Space space = new Space(); 
 
-        // Sample Logic //
-        Space space = new Space();
-        spaceRepository.save(space);
-            
+        space.setSpaceid(approved.getSpaceid());
+        space.setUserid(approved.getUserid());
+        space.setSpacename(approved.getSpacename());
+        space.setBookid("Order-Delivery");
+
+        if(approved.getStatus == "cancel-pay"){
+           space.setStatus("cancel-register");          
+        }
+        else{
+          space.setStatus("success-register");
+        } 
+                  
+        spaceRepository.save(space);    
     }
 
 
