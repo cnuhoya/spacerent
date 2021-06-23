@@ -20,7 +20,7 @@ public class PolicyHandler{
         System.out.println("\n\n##### listener Updatestate : " + registered.toJson() + "\n\n");
 
         // booking 성공 상태 저장  //
-        Book book = bookRepository.findByBookId(registered.getBookid());
+        Book book = bookRepository.findByBookid(registered.getBookid());
         book.setStatus(registered.getStatus());
         bookRepository.save(book);
             
@@ -33,7 +33,7 @@ public class PolicyHandler{
         System.out.println("\n\n##### listener Updatestate : " + registercancelled.toJson() + "\n\n");
 
         // booking 취소 상태 저장  //
-        Book book = bookRepository.findByBookId(registercancelled.getBookid());
+        Book book = bookRepository.findByBookid(registercancelled.getBookid());
         book.setStatus(registercancelled.getStatus());
         bookRepository.save(book);
             
