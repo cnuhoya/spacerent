@@ -11,11 +11,11 @@ public class Booked extends AbstractEvent {
         super();
     }
 
-    public Long getId() {
+    public Long getBookid() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setBookid(Long id) {
         this.id = id;
     }
     public Long getUserid() {

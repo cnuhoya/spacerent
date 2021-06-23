@@ -23,11 +23,11 @@ public class Book {
         booked.publishAfterCommit();
 
         spacerent.external.Payment payment = new spacerent.external.Payment();
-        payment.setBookId(booked.getBookid());
+        payment.setBookid(booked.getBookid());
         payment.setSpacename(booked.getSpacename());
         payment.setStatus("booking");
         payment.setUserid(booked.getBookid());
-        Application.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
+ //       Application.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
 
 
     }
@@ -42,11 +42,11 @@ public class Book {
             bookcancelled.publishAfterCommit();
             
             spacerent.external.Payment payment = new spacerent.external.Payment();
-            payment.setBookId(booked.getBookid());
-            payment.setSpacename(booked.getSpacename());
+            payment.setBookid(bookcancelled.getBookid());
+            payment.setSpacename(bookcancelled.getSpacename());
             payment.setStatus("cancel-booking");
-            payment.setUserid(booked.getBookid());
-            Application.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);            
+            payment.setUserid(bookcancelled.getBookid());
+//            Application.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);            
         }        
 
 
@@ -80,6 +80,9 @@ public class Book {
 
     public void setSpacename(String spacename) {
         this.spacename = spacename;
+    }
+
+    public class findByBookId {
     }
 
 

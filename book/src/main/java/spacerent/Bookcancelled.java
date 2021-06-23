@@ -8,11 +8,11 @@ public class Bookcancelled extends AbstractEvent {
     private String status;
     private String spacename;
 
-    public Long getId() {
+    public Long getBookid() {
         return bookid;
     }
 
-    public void setId(Long bookid) {
+    public void setBookid(Long bookid) {
         this.bookid = bookid;
     }
     public Long getUserid() {
