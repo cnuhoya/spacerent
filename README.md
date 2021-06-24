@@ -634,7 +634,7 @@ payment/kubernetes/deployment.yml
 ```
 - 결제 서비스에 대한 replica를 동적으로 늘려주도록 HPA를 설정 ( CPU 사용량이 15프로를 넘어서면 replica를 10개까지 증가 )
 ```
-kubectl autoscale deploy payment --min=1 --max=10 --cpu-percent=15 -n edu
+kubectl autoscale deploy payment --min=1 --max=10 --cpu-percent=15 -n spacerent
 ```
 - 서킷브레이크와 동일하게 워크로드를 1분 30초간 부여.
 ```
