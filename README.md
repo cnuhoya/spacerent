@@ -372,10 +372,10 @@ server:
 
 ```
 # 게이트웨이를 통해 등록 확인
-![image](https://user-images.githubusercontent.com/19682978/123195899-e5066b80-d4e3-11eb-96db-72de4aa4441c.png)
+![image](https://user-images.githubusercontent.com/19682978/123275455-4b6ca780-d53f-11eb-9f07-c4567235baf5.png)
 
 # 마이페이지 확인
-![image](https://user-images.githubusercontent.com/19682978/123195935-f780a500-d4e3-11eb-9c69-c0961f6a4a29.png)
+![image](https://user-images.githubusercontent.com/19682978/123275505-558ea600-d53f-11eb-9f06-acd43d05d866.png)
 
 
 ## CQRS
