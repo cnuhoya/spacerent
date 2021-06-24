@@ -284,7 +284,8 @@ http GET http://localhost:8083/payments/1
 
 # 공간 취소 확인(register)
 http GET http://localhost:8082/spaces/1
-
+```
+![image](https://user-images.githubusercontent.com/19682978/123193183-4546de80-d4df-11eb-80be-16bd4e69ba6e.png)
 ```
 
 ## Gateway 적용
