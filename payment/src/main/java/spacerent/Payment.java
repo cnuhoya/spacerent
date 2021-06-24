@@ -22,6 +22,15 @@ public class Payment {
         Approved approved = new Approved();
         BeanUtils.copyProperties(this, approved);
         approved.publishAfterCommit();
+
+            try{
+                Thread.sleep(2500);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                System.out.println();
+            }        
+        
     }
 
 
