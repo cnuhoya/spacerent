@@ -369,6 +369,12 @@ server:
   port: 8080
 
 ```
+# 게이트웨이를 통해 등록 확인
+![image](https://user-images.githubusercontent.com/19682978/123195899-e5066b80-d4e3-11eb-96db-72de4aa4441c.png)
+
+# 마이페이지 확인
+![image](https://user-images.githubusercontent.com/19682978/123195935-f780a500-d4e3-11eb-9c69-c0961f6a4a29.png)
+
 
 ## CQRS
 타 마이크로서비스의 데이터 원본에 접근없이(Composite 서비스나 조인SQL 등 없이)도 내 서비스의 공간 예약 내역 조회가 가능하게 구현해 두었다.
