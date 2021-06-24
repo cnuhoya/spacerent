@@ -23,8 +23,8 @@ public class Payment {
         BeanUtils.copyProperties(this, approved);
         approved.publishAfterCommit();
 
-        System.out.println("\n\nCircuit braker 확인 bookid 9999: " + this.bookid + "\n\n");      
-        if(this.bookid == 9999){ 
+        System.out.println("\n\nCircuit braker 확인 userid 9999: " + this.bookid + "\n\n");      
+        if(this.userid == 9999){ 
             try{
                 Thread.sleep(2500);
             }
