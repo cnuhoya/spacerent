@@ -19,13 +19,24 @@ public class Book {
     @PostPersist
     public void onPostPersist(){
         Booked booked = new Booked();
+
+        try{
+            booked.setStatus("booking");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            booked.setStatus("Timeout");
+            System.out.println("**** Payment Service TIMEOUT ****");
+        }
+
         BeanUtils.copyProperties(this, booked);
         booked.publishAfterCommit();
 
         spacerent.external.Payment payment = new spacerent.external.Payment();
         payment.setBookid(booked.getBookid());
         payment.setSpacename(booked.getSpacename());
-        payment.setStatus("booking");
+        payment.setStatus("success-pay");
         payment.setUserid(booked.getBookid());
         BookApplication.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
 
