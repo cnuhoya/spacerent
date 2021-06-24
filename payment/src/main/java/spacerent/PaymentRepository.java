@@ -6,6 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel="payments", path="payments")
 public interface PaymentRepository extends PagingAndSortingRepository<Payment, Long>{
 
-    Payment findByBookId(Long bookid);
+    Payment findByBookid(Long bookid);
 
 }
