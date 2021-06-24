@@ -22,10 +22,11 @@ public class Payment {
         Approved approved = new Approved();
         BeanUtils.copyProperties(this, approved);
         approved.publishAfterCommit();
-
-        System.out.println("\n\nCircuit braker 확인 userid 9999: " + this.bookid + "\n\n");      
-        if(this.userid == 9999){ 
+        
+        System.out.println("\n\nCircuit braker 확인 spacename: braker: " + approved.getSpacename() + "\n\n");      
+        if(approved.getSpacename().equals("braker")){ 
             try{
+                System.out.println("\n\n#######Circuit braker###########\n\n");                
                 Thread.sleep(2500);
             }
             catch(Exception e){
