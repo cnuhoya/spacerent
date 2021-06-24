@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MypageRepository extends CrudRepository<Mypage, Long> {
 
+    Mypage findByBookid(Long bookid);
 
 }

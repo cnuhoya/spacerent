@@ -1,0 +1,8 @@
+spacerent\PolicyHandler.class
+spacerent\MypageViewHandler.class
+spacerent\MypageApplication.class
+spacerent\config\kafka\KafkaProcessor.class
+spacerent\Mypage.class
+spacerent\AbstractEvent$1.class
+spacerent\AbstractEvent.class
+spacerent\MypageRepository.class
