@@ -423,8 +423,7 @@ book 서비스 내 external.PaymentService
 - payment 서비스 내린 후 확인 한 상태
 ![image](https://user-images.githubusercontent.com/19682978/123289575-8aa0f580-d54b-11eb-8009-e23b01216f93.png)
 
-'''
-
+```
 package spacerent.external;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -441,19 +440,18 @@ public interface PaymentService {
     public void pay(@RequestBody Payment payment);
 
 }
-
-'''
+```
 
 book 서비스 내에서 pay 메소드 호출
 
-'''
+```
         spacerent.external.Payment payment = new spacerent.external.Payment();
         payment.setBookid(booked.getBookid());
         payment.setSpacename(booked.getSpacename());
         payment.setStatus("success-pay");
         payment.setUserid(booked.getUserid());
         BookApplication.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
-'''
+```
 
 # 운영
 
