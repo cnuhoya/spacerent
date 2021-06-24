@@ -403,15 +403,16 @@ server:
 
 CQRS를 구현하여 마이페이지를 통해 조회할 수 있도록 구현
 
-# 게이트웨이를 통해 등록 확인
 ![image](https://user-images.githubusercontent.com/19682978/123275455-4b6ca780-d53f-11eb-9f07-c4567235baf5.png)
 
-# 마이페이지 확인
 ![image](https://user-images.githubusercontent.com/19682978/123275505-558ea600-d53f-11eb-9f06-acd43d05d866.png)
 
 ## Polyglot 
 
 타 서비스들과 다른 DB를 사용하여 각 마이크로서비스의 다양한 요구사항과 서로 다른 종류의 DB간에도 문제 없이 능동적으로 대처가능한 다형성을 만족하는지 확인
+( mypage를 제외한 나머지는 h2로 구현 )
+![image](https://user-images.githubusercontent.com/19682978/123297016-1fa6ed00-d552-11eb-9b04-64bb4d862fd5.png)
+
 
 ## 동기식 호출
 
@@ -482,12 +483,10 @@ mvn package
 
 - Docker Image Build/Push, deploy/service 생성 (yml 이용)
 
-```
 -- namespace 생성
 
 ```
 kubectl create ns spacerent
-```
 
 # book
 cd book
@@ -576,7 +575,7 @@ spec:
 ## 동기호출 / Circuit braker / 장애
 
 - 서킷 브레이킹 프레임워크의 선택: Spring FeignClient + Hystrix 옵션을 사용하여 구현함  
-시나리오는 신청서비스(app) -> 결제(payment) 시의 연결을 RESTful Request/Response로 연동하여 구현이 되어있고, 결제 요청이 과도할 경우 CircuitBreaker를 통하여 장애 격리.  
+시나리오는 예약(book) -> 결제(payment) 시의 연결을 RESTful Request/Response로 연동하여 구현이 되어있고, 결제 요청이 과도할 경우 CircuitBreaker를 통하여 장애 격리 
 
 - Hystrix를 설정: 요청처리 쓰레드에서 처리시간이 2500 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```
@@ -590,7 +589,7 @@ hystrix:
     default:
       execution.isolation.thread.timeoutInMilliseconds: 2500
 ```
-- 피호출 서비스(결제:payment)의 임의 부하 처리 - 400 밀리에서 증감 220 밀리 정도 왔다갔다 하게 
+- payment처리
 
 ```java
 # (payment) Payment.java
@@ -622,8 +621,8 @@ siege -c100 -t60S -v --content-type "application/json" 'http://book:8080/books P
 ![image](https://user-images.githubusercontent.com/19682978/123290147-00a55c80-d54c-11eb-9fcb-fe23fd9b882f.png)
 
 ## AutuScale (HPA)
-앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다.
-- 결제 서비스에 리소스에 대한 사용량을 정의한다.
+서킷브레이크 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다.
+- 결제 서비스에 리소스에 대한 사용량을 정의.
 payment/kubernetes/deployment.yml
 ```
   resources:
@@ -636,7 +635,7 @@ payment/kubernetes/deployment.yml
 ```
 kubectl autoscale deploy payment --min=1 --max=10 --cpu-percent=15 -n edu
 ```
-- CB에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
+- 서킷브레이크와 동일하게 워크로드를 1분 30초간 부여.
 ```
 kubectl exec -it pod/siege -c siege -n edu -- /bin/bash
 siege -c100 -t90S -v --content-type "application/json" 'http://book:8080/books POST {"userId":"5", "bookid":"5", "spacename":"numberfive", "status":"booking" }'
@@ -645,18 +644,18 @@ siege -c100 -t90S -v --content-type "application/json" 'http://book:8080/books P
 ```
 watch kubectl get all -n edu
 ```
-- 잠시 후 payment에 대해 스케일 아웃이 벌어지는 것을 확인할 수 있다.  
+- 확인.  
 ![image](https://user-images.githubusercontent.com/19682978/123290355-29c5ed00-d54c-11eb-9877-e7cfd6da90f6.png)
 
 ## Configmap
 
 - 변경 가능성이 있는 설정을 ConfigMap을 사용하여 관리  
-  - app 서비스에서 바라보는 payment 서비스 url을 ConfigMap 사용하여 구현​  
+  - app 서비스에서 바라보는 payment 서비스 url을 ConfigMap 사용하여 구현
 
 - in book src (book/src/main/java/edu/external/PaymentService.java)  
     ![image](https://user-images.githubusercontent.com/19682978/123294333-b625df00-d54f-11eb-9aba-b1b364c746f3.png)
 
-- book application.yml (book/src/main/resources/application.yml)​  
+- book application.yml (book/src/main/resources/application.yml)
     ![image](https://user-images.githubusercontent.com/19682978/123294524-e5d4e700-d54f-11eb-88c1-70d1cd3812ed.png)
 
 - book deploy yml (book/kubernetes/deployment.yml)  
@@ -664,15 +663,14 @@ watch kubectl get all -n edu
 
 - configmap 생성 후 조회
 
-    ```sh
-    kubectl create configmap paymenturl --from-literal=url=http://payment:8080 -n edu
+    ```
+    kubectl create configmap paymenturl --from-literal=url=http://payment:8080 -n spacerent
     kubectl get configmap paymenturl -o yaml -n edu
     ```
-![image](https://user-images.githubusercontent.com/19682978/123290493-4c580600-d54c-11eb-8143-3f0180d13a62.png)
-
-    app pod 내부로 들어가서 환경변수도 확인
+   ![image](https://user-images.githubusercontent.com/19682978/123290493-4c580600-d54c-11eb-8143-3f0180d13a62.png)
     ```
-    kubectl exec -it pod/app-8cfc58b6f-lkxtz -n edu -- /bin/sh
+    app pod 내부로 들어가서 환경변수도 확인
+    kubectl exec -it pod/book-5d956f5564-cnt8p -n spacerent -- /bin/sh
     $ env
     ```
 ![image](https://user-images.githubusercontent.com/19682978/123290515-4feb8d00-d54c-11eb-98a4-9cb60408a545.png)
