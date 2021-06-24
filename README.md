@@ -260,7 +260,9 @@ http POST http://localhost:8081/books userid="1" bookid="1" spacename="numberone
 ```
 # 결제 확인(payment)
 http GET http://localhost:8083/payments/1
-
+```
+![image](https://user-images.githubusercontent.com/19682978/123185582-378a5c80-d4d1-11eb-9e4c-47b62b4adda4.png)
+```
 
 # 공간 등록(register)
 http PETCH http://localhost:8082/spaces/1 status="registered"
