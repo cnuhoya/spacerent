@@ -19,6 +19,8 @@ public class Payment {
 
     @PostPersist
     public void onPostPersist(){
+
+        System.out.println("\n\n$$$ 과연확인 : " + this.status + "\n\n");        
         Approved approved = new Approved();
         BeanUtils.copyProperties(this, approved);
         System.out.println("\n\nCircuit braker 확인 spacename: braker: " + approved.getSpacename() + "\n\n");      
@@ -31,15 +33,23 @@ public class Payment {
                 e.printStackTrace();
                 System.out.println();
             }
-        }
-        System.out.println("\n\n$$$ GETSTATUS 확인 : " + getStatus() + "\n\n");
-        System.out.println("\n\n$$$ APPROVE STATUS 확인 : " + approved.getStatus() + "\n\n");        
-        if(getStatus().equals("cancel-pay")) {            
-            approved.setStatus("cancel-pay");            
-        }
-        
+        }        
         approved.publishAfterCommit();
     }
+
+    @PostUpdate
+    public void onPostUpdate(){
+
+        System.out.println("\n\n$$$ 과연확인 : " + this.status + "\n\n");  
+
+
+        if("cancel-pay".equals(this.status)){ 
+            Cancelled cancelled = new Cancelled();
+            BeanUtils.copyProperties(this, cancelled);
+            cancelled.publishAfterCommit();
+        }
+
+    }    
 
 
     public Long getPayid() {
