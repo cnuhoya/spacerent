@@ -255,37 +255,39 @@ public class PolicyHandler{
 # 공간 예약(booking)
 http POST http://localhost:8081/books userid="1" bookid="1" spacename="numberone" status="booking"
 ```
-![image](https://user-images.githubusercontent.com/19682978/123182766-14f54500-d4cb-11eb-9b48-5850fb93e418.png)
+![image](https://user-images.githubusercontent.com/19682978/123274827-d0a38c80-d53e-11eb-9f60-7f19c9f8b93d.png)
+
 
 ```
 # 결제 확인(payment)
 http GET http://localhost:8083/payments/1
 ```
-![image](https://user-images.githubusercontent.com/19682978/123185582-378a5c80-d4d1-11eb-9e4c-47b62b4adda4.png)
+![image](https://user-images.githubusercontent.com/19682978/123274889-dac58b00-d53e-11eb-8cf0-7b848faefabb.png)
+
 ```
 
 # 공간 등록 확인(register)
 http GET http://localhost:8082/spaces/1
 ```
-![image](https://user-images.githubusercontent.com/19682978/123185826-c13a2a00-d4d1-11eb-828a-45ddf363b727.png)
+![image](https://user-images.githubusercontent.com/19682978/123274939-e44ef300-d53e-11eb-9b91-6e02d674ac95.png)
 ```
 
 # 공간 예약 취소(booking)
-http POST http://localhost:8081/books userid="1" bookid="1" spacename="numberone" status="cancel-booking"
+http PATCH http://localhost:8081/books/2 status="cancel-booking"
 ```
-![image](https://user-images.githubusercontent.com/19682978/123185885-e464d980-d4d1-11eb-9458-63cd2b17e107.png)
+![image](https://user-images.githubusercontent.com/19682978/123274996-f03ab500-d53e-11eb-99e5-a3da37950003.png)
 ```
 
 # 결제 취소 확인(payment)
-http GET http://localhost:8083/payments/1 
+http GET http://localhost:8083/payments/2
 ```
-![image](https://user-images.githubusercontent.com/19682978/123186266-bf249b00-d4d2-11eb-80d2-07b21be52707.png)
+![image](https://user-images.githubusercontent.com/19682978/123275049-f9c41d00-d53e-11eb-8b0c-544ec7449191.png)
 ```
 
 # 공간 취소 확인(register)
-http GET http://localhost:8082/spaces/1
+http GET http://localhost:8082/spaces/2
 ```
-![image](https://user-images.githubusercontent.com/19682978/123193183-4546de80-d4df-11eb-80be-16bd4e69ba6e.png)
+![image](https://user-images.githubusercontent.com/19682978/123275082-02b4ee80-d53f-11eb-86e5-5965f8f86355.png)
 ```
 ```
 ## Gateway 적용
