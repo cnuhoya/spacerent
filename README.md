@@ -632,7 +632,7 @@ payment/kubernetes/deployment.yml
     requests:
       cpu: 200m
 ```
-- 결제 서비스에 대한 replica를 동적으로 늘려주도록 HPA를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica를 10개까지 늘려준다.
+- 결제 서비스에 대한 replica를 동적으로 늘려주도록 HPA를 설정 ( CPU 사용량이 15프로를 넘어서면 replica를 10개까지 증가 )
 ```
 kubectl autoscale deploy payment --min=1 --max=10 --cpu-percent=15 -n edu
 ```
@@ -651,7 +651,7 @@ watch kubectl get all -n edu
 ## Configmap
 
 - 변경 가능성이 있는 설정을 ConfigMap을 사용하여 관리  
-  - app 서비스에서 바라보는 payment 서비스 url을 ConfigMap 사용하여 구현
+  - Book에서 payment 서비스 url을 ConfigMap 사용하여 구현
 
 - in book src (book/src/main/java/edu/external/PaymentService.java)  
     ![image](https://user-images.githubusercontent.com/19682978/123294333-b625df00-d54f-11eb-9aba-b1b364c746f3.png)
@@ -669,8 +669,9 @@ watch kubectl get all -n edu
     kubectl get configmap paymenturl -o yaml -n edu
     ```
    ![image](https://user-images.githubusercontent.com/19682978/123290493-4c580600-d54c-11eb-8143-3f0180d13a62.png)
+    
+- book pod 내부 환경변수도 확인
     ```
-    app pod 내부로 들어가서 환경변수도 확인
     kubectl exec -it pod/book-5d956f5564-cnt8p -n spacerent -- /bin/sh
     $ env
     ```
