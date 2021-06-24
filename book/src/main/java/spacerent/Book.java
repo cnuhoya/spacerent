@@ -56,7 +56,7 @@ public class Book {
             payment.setBookid(bookcancelled.getBookid());
             payment.setSpacename(bookcancelled.getSpacename());
             payment.setStatus("cancel-booking");
-            payment.setUserid(bookcancelled.getBookid());
+            payment.setUserid(bookcancelled.getUserid());
             BookApplication.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);            
         }        
 
