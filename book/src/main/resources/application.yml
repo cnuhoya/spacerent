@@ -37,6 +37,20 @@ logging:
     org.springframework.cloud: debug
 server:
   port: 8081
+  
+
+api:
+  url:
+    Payment: http://localhost:8083
+
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution.isolation.thread.timeoutInMilliseconds: 2500  
 ---
 
 spring:
@@ -62,7 +76,11 @@ spring:
         event-out:
           destination: spacerent
           contentType: application/json
-          
+
+api:
+  url:
+    Payment: ${payment-url}
+
 feign:
   hystrix:
     enabled: true
