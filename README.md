@@ -525,7 +525,7 @@ kubectl create -f service.yaml -n spacerent
 
 ```
 
-- spacerent/gateway/kubernetes/deployment.yml 파일 
+- Yaml 파일을 이용한 Deployment
 
 ```
 apiVersion: apps/v1
@@ -550,8 +550,7 @@ spec:
           image: skccuser22acr.azurecr.io/gateway:latest
           ports:
             - containerPort: 8080
-```
-- spacerent/gateway/kubernetes/service.yaml 파일 
+``` 
 ```
 apiVersion: v1
 kind: Service
@@ -569,15 +568,17 @@ spec:
     app: gateway
 ```
 ## Deploy / Pipeline
+- Deployment 확인
   
  ![image](https://user-images.githubusercontent.com/19682978/123289793-b7eda380-d54b-11eb-8440-d9fba07a1b23.png)
 
 ## 동기호출 / Circuit braker / 장애
 
-- 서킷 브레이킹 프레임워크의 선택: Spring FeignClient + Hystrix 옵션을 사용하여 구현함  
-시나리오는 예약(book) -> 결제(payment) 시의 연결을 RESTful Request/Response로 연동하여 구현이 되어있고, 결제 요청이 과도할 경우 CircuitBreaker를 통하여 장애 격리 
+- 서킷 브레이크는 Spring FeignClient + Hystrix 옵션을 사용 
+- 시나리오는 예약(book) -> 결제(payment) 시의 연결을 RESTful Request/Response로 연동하여 구현
+- 결제 요청이 과도할 경우 서킷브레이크 
 
-- Hystrix를 설정: 요청처리 쓰레드에서 처리시간이 2500 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
+- Hystrix를 설정: 요청처리 쓰레드에서 처리시간이 2000 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```
 # application.yml
 feign:
@@ -587,7 +588,7 @@ feign:
 hystrix:
   command:
     default:
-      execution.isolation.thread.timeoutInMilliseconds: 2500
+      execution.isolation.thread.timeoutInMilliseconds: 2000
 ```
 - payment처리
 
