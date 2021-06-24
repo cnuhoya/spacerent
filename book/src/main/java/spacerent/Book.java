@@ -30,15 +30,15 @@ public class Book {
             System.out.println("**** Payment Service TIMEOUT ****");
         }
 
-        BeanUtils.copyProperties(this, booked);
+        BeanUtils.copyProperties(this, booked);     
         booked.publishAfterCommit();
 
-//        spacerent.external.Payment payment = new spacerent.external.Payment();
-//        payment.setBookid(booked.getBookid());
-//        payment.setSpacename(booked.getSpacename());
-//        payment.setStatus("success-pay");
-//        payment.setUserid(booked.getUserid());
-//        BookApplication.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
+        spacerent.external.Payment payment = new spacerent.external.Payment();
+        payment.setBookid(booked.getBookid());
+        payment.setSpacename(booked.getSpacename());
+        payment.setStatus("success-pay");
+        payment.setUserid(booked.getUserid());
+        BookApplication.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
 
 
     }
@@ -50,13 +50,17 @@ public class Book {
         if(getStatus().equals("cancel-booking")) {
             Bookcancelled bookcancelled = new Bookcancelled();
             BeanUtils.copyProperties(this, bookcancelled);
+            bookcancelled.setBookid(this.getBookid());
+            bookcancelled.setSpacename(this.getSpacename());
+            bookcancelled.setUserid(this.getUserid());
+            bookcancelled.setStatus("cancel-booking");                                
             bookcancelled.publishAfterCommit();
             
 //            spacerent.external.Payment payment = new spacerent.external.Payment();
 //            payment.setBookid(bookcancelled.getBookid());
 //            payment.setSpacename(bookcancelled.getSpacename());
 //            payment.setStatus("cancel-booking");
-//            payment.setUserid(bookcancelled.getUserid());
+//            payment.setUserid(bookcancelled.getBookid());
 //            BookApplication.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);            
         }        
 
