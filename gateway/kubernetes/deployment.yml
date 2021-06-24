@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gateway
-  namespace: spacerent
   labels:
     app: gateway
 spec:
@@ -17,6 +16,6 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: username/gateway:latest
+          image: skccuser22.azurecr.io/gateway:latest
           ports:
             - containerPort: 8080
