@@ -37,7 +37,7 @@ public class Book {
         payment.setBookid(booked.getBookid());
         payment.setSpacename(booked.getSpacename());
         payment.setStatus("success-pay");
-        payment.setUserid(booked.getBookid());
+        payment.setUserid(booked.getUserid());
         BookApplication.applicationContext.getBean(spacerent.external.PaymentService.class).pay(payment);
 
 
