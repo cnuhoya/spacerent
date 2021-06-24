@@ -21,10 +21,10 @@ public class Payment {
     public void onPostPersist(){
         Approved approved = new Approved();
         BeanUtils.copyProperties(this, approved);
-        
         System.out.println("\n\nCircuit braker 확인 spacename: braker: " + approved.getSpacename() + "\n\n");      
         if(approved.getSpacename().equals("braker")){ 
-            try{           
+            try{
+              
                 Thread.sleep(2500);
             }
             catch(Exception e){
@@ -32,7 +32,13 @@ public class Payment {
                 System.out.println();
             }
         }
-        approved.publishAfterCommit();        
+        System.out.println("\n\n$$$ GETSTATUS 확인 : " + getStatus() + "\n\n");
+        System.out.println("\n\n$$$ APPROVE STATUS 확인 : " + approved.getStatus() + "\n\n");        
+        if(getStatus().equals("cancel-pay")) {            
+            approved.setStatus("cancel-pay");            
+        }
+        
+        approved.publishAfterCommit();
     }
 
 
