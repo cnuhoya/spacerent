@@ -19,6 +19,12 @@ spec:
           image: skccuser22acr.azurecr.io/book:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: payment-url
+              valueFrom:
+                configMapKeyRef:
+                  name: paymenturl
+                  key: url            
           readinessProbe:
             httpGet:
               path: '/actuator/health'
