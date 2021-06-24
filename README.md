@@ -253,19 +253,23 @@ public class PolicyHandler{
 - 적용 후 REST API 의 테스트
 ```
 # 공간 예약(booking)
-http POST http://localhost:8081/book userid="CHOI" bookid="1" spacename="numberone" status="booking"
+http POST http://localhost:8081/books userid="1" bookid="1" spacename="numberone" status="booking"
+```
+![image](https://user-images.githubusercontent.com/19682978/123182766-14f54500-d4cb-11eb-9b48-5850fb93e418.png)
 
+```
 # 결제 확인(payment)
-http GET http://localhost:8084/payment/1 
+http GET http://localhost:8083/payments/1
+
 
 # 공간 등록(register)
-http PETCH http://localhost:8082/space/1 status="registered"
+http PETCH http://localhost:8082/spaces/1 status="registered"
 
 # 공간 예약 취소(booking)
-http POST http://localhost:8081/book userid="CHOI" bookid="1" spacename="numberone" status="cancel-booking"
+http POST http://localhost:8081/books userid="1" bookid="1" spacename="numberone" status="cancel-booking"
 
 # 결제 확인(payment)
-http GET http://localhost:8084/payment/1 
+http GET http://localhost:8083/payments/1 
 
 # 공간 취소(register)
 http PETCH http://localhost:8082/space/1 status="registercancelled"
