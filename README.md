@@ -287,7 +287,7 @@ http GET http://localhost:8082/spaces/1
 ```
 ![image](https://user-images.githubusercontent.com/19682978/123193183-4546de80-d4df-11eb-80be-16bd4e69ba6e.png)
 ```
-
+```
 ## Gateway 적용
 API GateWay를 통하여 마이크로 서비스들의 진입점을 통일할 수 있다. 
 아래와 같이 GateWay를 적용하여 마이크로서비스들은 http://localhost:8088/{context}로 접근 .
