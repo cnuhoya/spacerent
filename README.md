@@ -62,7 +62,7 @@
 ![image](https://user-images.githubusercontent.com/19682978/123178376-08b8ba00-d4c2-11eb-9585-3a94560cc26f.png)
 
 ### 완성된 최종 모형 ( 시나리오 점검 후 )
-![image](https://user-images.githubusercontent.com/19682978/123271386-bcaa5b80-d53b-11eb-9c99-f80cc63fbc9c.png)
+![image](https://user-images.githubusercontent.com/19682978/123271535-e794af80-d53b-11eb-8ad1-2fe9982f72c4.png)
 
 ## 헥사고날 아키텍처 다이어그램 도출 
 ![image](https://user-images.githubusercontent.com/20077391/121859335-88ac8a80-cd32-11eb-9159-9599abcf67cf.png)
