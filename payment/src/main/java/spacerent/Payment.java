@@ -22,8 +22,6 @@ public class Payment {
         Approved approved = new Approved();
         BeanUtils.copyProperties(this, approved);
         approved.publishAfterCommit();
-
-
     }
 
 

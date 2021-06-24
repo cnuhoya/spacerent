@@ -20,8 +20,11 @@ public class PolicyHandler{
         System.out.println("\n\n##### listener Cancelpay : " + bookcancelled.toJson() + "\n\n");
 
         // 결제 취소 상태 저장 
+        System.out.println("\n\n###################################: " + bookcancelled.getBookid() + "\n\n");
         Payment payment = paymentRepository.findByBookid(bookcancelled.getBookid());
+        System.out.println("\n\n###################################: " + bookcancelled.getBookid() + "\n\n");
         payment.setStatus("cancel-pay");
+        System.out.println("\n\n###################################: " + payment.getStatus() + "\n\n");
         paymentRepository.save(payment);        
             
     }
