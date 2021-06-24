@@ -666,7 +666,7 @@ watch kubectl get all -n edu
 
     ```
     kubectl create configmap paymenturl --from-literal=url=http://payment:8080 -n spacerent
-    kubectl get configmap paymenturl -o yaml -n edu
+    kubectl get configmap paymenturl -o yaml -n spacerent
     ```
    ![image](https://user-images.githubusercontent.com/19682978/123290493-4c580600-d54c-11eb-8143-3f0180d13a62.png)
     
