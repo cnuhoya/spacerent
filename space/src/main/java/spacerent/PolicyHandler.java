@@ -18,11 +18,11 @@ public class PolicyHandler{
         if(!approved.validate()) return;
 
         System.out.println("\n\n##### listener Receivestatus : " + approved.toJson() + "\n\n");        
-        Space space = new Space(); 
+        Space space = spaceRepository.findByBookid(approved.getBookid()); 
 
-        space.setUserid(approved.getUserid());
-        space.setSpacename(approved.getSpacename());
-        space.setBookid(approved.getBookid());
+//        space.setUserid(approved.getUserid());
+//        space.setSpacename(approved.getSpacename());
+//        space.setBookid(approved.getBookid());
 
         if(approved.getStatus() == "cancel-pay"){
            space.setStatus("cancel-register");          
