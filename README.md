@@ -677,3 +677,22 @@ watch kubectl get all -n edu
     ```
 ![image](https://user-images.githubusercontent.com/19682978/123290515-4feb8d00-d54c-11eb-98a4-9cb60408a545.png)
 
+## Liveness - selfhealing
+- port 와 path 잘못된 값으로 설정한 후 deploy 재배포후 확인
+    ```
+          livenessProbe:
+            httpGet:
+              path: '/actuator/failed'
+              port: 8090
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+    ```    
+배포전)
+![image](https://user-images.githubusercontent.com/19682978/123353046-987e6700-d59b-11eb-9b65-5af2bdf56d1f.png)
+
+배포후)
+![image](https://user-images.githubusercontent.com/19682978/123353073-aa600a00-d59b-11eb-95f7-9005fee5a5b4.png)
+
+
