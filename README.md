@@ -698,4 +698,22 @@ watch kubectl get all -n edu
 ![image](https://user-images.githubusercontent.com/19682978/123353207-f7dc7700-d59b-11eb-938b-10569a6ebac8.png)
 
 
+## Readness - 무정지재배포
+
+- Readness 설정 제거 -
+    ```
+          # readinessProbe:
+          #   httpGet:
+          #     path: '/actuator/health'
+          #     port: 8080
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 2
+          #   periodSeconds: 5
+          #   failureThreshold: 10    
+    ```
+- 버전을 바꿈과 두개의 book이 공존함을 확인
+
+![image](https://user-images.githubusercontent.com/19682978/123354112-ec8a4b00-d59d-11eb-8a09-401468c58936.png)
+
+![image](https://user-images.githubusercontent.com/19682978/123354122-f2802c00-d59d-11eb-8a8f-60a7066b4d3b.png)
 
