@@ -690,9 +690,12 @@ watch kubectl get all -n edu
             failureThreshold: 5
     ```    
 배포전)
+
 ![image](https://user-images.githubusercontent.com/19682978/123353046-987e6700-d59b-11eb-9b65-5af2bdf56d1f.png)
 
 배포후)
-![image](https://user-images.githubusercontent.com/19682978/123353073-aa600a00-d59b-11eb-95f7-9005fee5a5b4.png)
+
+![image](https://user-images.githubusercontent.com/19682978/123353207-f7dc7700-d59b-11eb-938b-10569a6ebac8.png)
+
 
 
